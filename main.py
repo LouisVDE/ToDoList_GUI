@@ -1,25 +1,30 @@
 import tkinter as tk
 from tkinter import messagebox
 
+def update_language():
+    tasks_menu.delete(0, tk.END)
+    if current_language == "fr":
+        tasks_menu.add_command(label="Tâches actives", command=switch_to_active_tasks)
+        tasks_menu.add_command(label="Tâches complétées", command=switch_to_completed_tasks)
+        add_button.config(text="Ajouter")
+        remove_button.config(text="Supprimer")
+    else:
+        tasks_menu.add_command(label="Active Tasks", command=switch_to_active_tasks)
+        tasks_menu.add_command(label="Completed Tasks", command=switch_to_completed_tasks)
+        add_button.config(text="Add")
+        remove_button.config(text="Remove")
+
 def set_french():
     global current_language
     current_language = "fr"
-    tasks_menu.delete(0, tk.END)
-    tasks_menu.add_command(label="Tâches actives", command=switch_to_active_tasks)
-    tasks_menu.add_command(label="Tâches complétées", command=switch_to_completed_tasks)
     window.config(menu=menu)
-    add_button.config(text="Ajouter")
-    remove_button.config(text="Supprimer")
+    update_language()
 
 def set_english():
     global current_language
     current_language = "en"
-    tasks_menu.delete(0, tk.END)
-    tasks_menu.add_command(label="Active Tasks", command=switch_to_active_tasks)
-    tasks_menu.add_command(label="Completed Tasks", command=switch_to_completed_tasks)
     window.config(menu=menu)
-    add_button.config(text="Add")
-    remove_button.config(text="Remove")
+    update_language()
 
 def add_task(event=None):
     task = entry.get()
@@ -129,12 +134,6 @@ window.config(menu=menu)
 
 tasks_menu = tk.Menu(menu)
 menu.add_cascade(label="Tâches", menu=tasks_menu)
-if current_language == "fr":
-    tasks_menu.add_command(label="Tâches actives", command=switch_to_active_tasks)
-    tasks_menu.add_command(label="Tâches complétées", command=switch_to_completed_tasks)
-else:
-    tasks_menu.add_command(label="Active Tasks", command=switch_to_active_tasks)
-    tasks_menu.add_command(label="Completed Tasks", command=switch_to_completed_tasks)
 
 language_menu = tk.Menu(menu)
 menu.add_cascade(label="Langue", menu=language_menu)
@@ -144,10 +143,7 @@ language_menu.add_command(label="English", command=set_english)
 completed_tasks_menu = tk.Menu(menu)
 completed_tasks_menu.add_command(label="Supprimer tâche", command=delete_completed_task)
 
-if current_language == "fr":
-    set_french()
-else:
-    set_english()
+update_language()
 
 window.bind("<Configure>", on_resize)
 window.bind("<Return>", add_task)
