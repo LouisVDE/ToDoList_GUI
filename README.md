@@ -6,6 +6,11 @@
 
   https://www.python.org/downloads/
 
+#### Get Tkinter
+
+
+`pip install tk`
+
   ###
 
 ## How to use ?
